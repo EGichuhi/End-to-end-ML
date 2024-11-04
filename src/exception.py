@@ -1,5 +1,6 @@
 import sys 
 import logging
+from src.logger import logging 
 
 #sys library will have information for exceptions
 
@@ -34,4 +35,4 @@ if __name__=="__main__":
     except Exception as e:
         logging.info("divide by zero")
         raise CustomException(e, sys)
-"""   
+"""
