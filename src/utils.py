@@ -42,5 +42,6 @@ def evaluate_models(x_train, y_train, x_test, y_test, models):
 
             return report
 
-    except:
-        pass
+    except Exception as e:
+        raise CustomException(e,sys)
+        

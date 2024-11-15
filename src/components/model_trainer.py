@@ -29,7 +29,7 @@ class ModelTrainer:
     def __init__(self):
         self.model_trainer_config=ModelTrainerConfig()
 
-    def initiate_model_trainer(self, train_array, test_array, preprocessor_path):
+    def initiate_model_trainer(self, train_array, test_array):
         try:
             logging.info("Splitting training and test input data")
             x_train,y_train,x_test,y_test=(
@@ -56,6 +56,25 @@ class ModelTrainer:
             best_model_name = list(model_report.keys())[
                 list(model_report.values()).index(best_model_score)
                 ]
+            
+            best_model = models[best_model_name]
 
-        except:
-            pass
+            if best_model_score<0.6:
+                raise CustomException("No best model found")
+            
+            
+            logging.info("Best found model on both training and testnig dataset")
+
+            save_object(
+                file_path=self.model_trainer_config.trained_model_file_path,
+                obj=best_model
+            )
+
+            Predicted=best_model.predict(x_test)
+
+            r2_square =r2_score(y_test, Predicted)
+            return r2_square
+        
+
+        except Exception as e:
+            raise CustomException(e,sys)
